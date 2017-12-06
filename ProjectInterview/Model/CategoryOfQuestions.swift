@@ -12,8 +12,7 @@ import SwiftyJSON
 struct CategoryOfQuestions {
     let id: Int
     let name: String
-    //   let parent_category: String
-    //   let
+
 }
 
 // MARK: extension
@@ -25,5 +24,14 @@ extension CategoryOfQuestions {
         }
         self.id = id
         self.name = name
+    }
+}
+extension CategoryOfQuestions: Equatable, Hashable {
+    var hashValue: Int {
+        return self.id
+    }
+    
+    static func == (lhs: CategoryOfQuestions, rhs: CategoryOfQuestions) -> Bool {
+        return lhs.id == rhs.id
     }
 }
