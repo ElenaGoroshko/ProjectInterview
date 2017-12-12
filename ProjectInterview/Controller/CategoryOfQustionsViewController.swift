@@ -18,22 +18,7 @@ class CategoryOfQustionsViewController: UIViewController {
         super.viewDidLoad()
         tabelView.delegate = self
         tabelView.dataSource = self
-       
-        Alamofire.request("http://qriusity.com/v1/categories/").responseJSON { response in
-            switch response.result {
-            case .success(let value):
-                let jsonObj = JSON(value)
-                guard let jsonArr = jsonObj.array else { return }
-                for jsonObject in jsonArr {
-                    guard let categories = CategoryOfQuestions(json: jsonObject) else { continue }
-                    DataManager.instance.addCategoryOfQuestions(categories)
-                    debugPrint(categories)
-                }
-                self.tabelView.reloadData()
-            case .failure(let error):
-                debugPrint(error)
-            }
-        }
+        getCategory()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destVC = segue.destination as? QuestionsViewController, segue.identifier == "SwowQuestions" else {
@@ -71,9 +56,24 @@ extension CategoryOfQustionsViewController: UITableViewDelegate, UITableViewData
         return cell
     }
 }
-// MARK: - Alamofire notificatin
+// MARK: - Alamofire
 extension CategoryOfQustionsViewController {
-    @objc func responseCompled(_ notification: Notification) {
-        self.tabelView.reloadData()
+    
+    func getCategory() {
+        Alamofire.request("http://qriusity.com/v1/categories/").responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                let jsonObj = JSON(value)
+                guard let jsonArr = jsonObj.array else { return }
+                for jsonObject in jsonArr {
+                    guard let categories = CategoryOfQuestions(json: jsonObject) else { continue }
+                    DataManager.instance.addCategoryOfQuestions(categories)
+                    debugPrint(categories)
+                }
+                self.tabelView.reloadData()
+            case .failure(let error):
+                debugPrint(error)
+            }
+        }
     }
 }

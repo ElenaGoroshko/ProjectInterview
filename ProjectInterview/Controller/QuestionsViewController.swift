@@ -23,23 +23,7 @@ class QuestionsViewController: UIViewController {
         tableView.dataSource = self
         
         guard let category = categoryOfQuestions else { return }
-        let url = "http://qriusity.com/v1/categories/\(category.id)/questions"
-        Alamofire.request(url).responseJSON { [weak self] response in
-            switch response.result {
-            case .success(let value):
-                let jsonObj = JSON(value)
-                guard let jsonArr = jsonObj.array else { return }
-                for jsonObject in jsonArr {
-                    guard let question = Question(json: jsonObject) else { continue }
-                    debugPrint(question)
-                    DataManager.instance.addQuestion(categoryOfQuestions: (category), question: question)
-                }
-            case .failure(let error):
-                debugPrint(error)
-            }
-           // debugPrint(DataManager.instance.questions(categoryOfQuestions: (category)))
-            self?.tableView.reloadData()
-        }
+        getQuestions(category: category)
         
     }
 
@@ -63,5 +47,32 @@ extension QuestionsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.update(question: quest.question)
         return cell
     }
+}
 
+// MARK: - Alamofire
+extension QuestionsViewController {
+    func getQuestions(category: CategoryOfQuestions) {
+        if DataManager.instance.questions(categoryOfQuestions: category) == nil {
+           
+            let url = "http://qriusity.com/v1/categories/\(category.id)/questions"
+            Alamofire.request(url).responseJSON { [weak self] response in
+                switch response.result {
+                case .success(let value):
+                    let jsonObj = JSON(value)
+                    guard let jsonArr = jsonObj.array else { return }
+                    for jsonObject in jsonArr {
+                        guard let question = Question(json: jsonObject) else { continue }
+                        debugPrint(question)
+                        DataManager.instance.addQuestion(categoryOfQuestions: (category), question: question)
+                    }
+                case .failure(let error):
+                    debugPrint(error)
+                }
+                // debugPrint(DataManager.instance.questions(categoryOfQuestions: (category)))
+                self?.tableView.reloadData()
+            }
+        } else {
+            self.tableView.reloadData()
+        }
+    }
 }

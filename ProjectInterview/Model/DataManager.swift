@@ -51,7 +51,7 @@ final class DataManager {
         guard let questions = self.questions[categoryOfQuestions] else { return nil}
         return questions[index]
     }
-    func questions(categoryOfQuestions: CategoryOfQuestions) -> [Question] {
-        return self.questions[categoryOfQuestions] ?? []
+    func questions(categoryOfQuestions: CategoryOfQuestions) -> [Question]? {
+        return self.questions[categoryOfQuestions]
     }
 }
