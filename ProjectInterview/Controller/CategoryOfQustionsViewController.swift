@@ -19,7 +19,7 @@ class CategoryOfQustionsViewController: UIViewController {
         tabelView.delegate = self
         tabelView.dataSource = self
        
-        Alamofire.request("https://qriusity.com/v1/categories/").responseJSON { response in
+        Alamofire.request("http://qriusity.com/v1/categories/").responseJSON { response in
             switch response.result {
             case .success(let value):
                 let jsonObj = JSON(value)
@@ -50,23 +50,8 @@ class CategoryOfQustionsViewController: UIViewController {
             debugPrint("Error: Category isn't exist.")
             return
         }
-       // destVC.categoryOfQuestions = category
+        destVC.categoryOfQuestions = category
 
-        let url = "https://qriusity.com/v1/categories/\(category.id)/questions"
-        Alamofire.request(url).responseJSON { response in
-            switch response.result {
-            case .success(let value):
-                let jsonObj = JSON(value)
-                guard let jsonArr = jsonObj.array else { return }
-                for jsonObject in jsonArr {
-                    guard let question = Question(json: jsonObject) else { continue }
-                    DataManager.instance.addQuestion(categoryOfQuestions: category, question: question)
-                    debugPrint(jsonObject)
-                }
-            case .failure(let error):
-                debugPrint(error)
-            }
-        }
     }
 }
 // MARK: - extension UITableView
@@ -76,7 +61,6 @@ extension CategoryOfQustionsViewController: UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        debugPrint("1")
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryOfQuestionsCell") as? CategoryOfQuestionsCell else {
             debugPrint("Error: Cell does't exist")
             return CategoryOfQuestionsCell()

@@ -15,6 +15,7 @@ struct  Question {
 }
 extension Question {
     init? (json: JSON) {
+        //debugPrint(json["question"])
         guard let id = json["id"].int,
             let name = json["question"].string else {
                 return nil

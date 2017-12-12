@@ -34,18 +34,24 @@ final class DataManager {
         return allCategories.count
     }
     func addQuestion(categoryOfQuestions: CategoryOfQuestions, question: Question) {
-        for categ in allCategories where categ == categoryOfQuestions {
+       // for categ in allCategories {
             if questions[categoryOfQuestions] == nil {
                 questions[categoryOfQuestions] = [question]
             } else {
                 questions[categoryOfQuestions]?.append(question)
             }
-        }
+        //}
     }
 
     func countOfQuestion(categoryOfQuestions: CategoryOfQuestions) -> Int {
         guard let questions = self.questions[categoryOfQuestions] else { return 0 }
         return questions.count
     }
-
+    func question(categoryOfQuestions: CategoryOfQuestions, index: Int) -> Question? {
+        guard let questions = self.questions[categoryOfQuestions] else { return nil}
+        return questions[index]
+    }
+    func questions(categoryOfQuestions: CategoryOfQuestions) -> [Question] {
+        return self.questions[categoryOfQuestions] ?? []
+    }
 }
