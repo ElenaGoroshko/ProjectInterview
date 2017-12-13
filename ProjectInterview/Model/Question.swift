@@ -12,15 +12,27 @@ import SwiftyJSON
 struct  Question {
     let id: Int
     let question: String
+    let answers: Int
+    var options: [String]
 }
 extension Question {
     init? (json: JSON) {
-        //debugPrint(json["question"])
+        debugPrint(json)
         guard let id = json["id"].int,
-            let name = json["question"].string else {
+            let name = json["question"].string,
+            let answers = json["answers"].int
+        else {
                 return nil
         }
         self.id = id
         self.question = name
+        self.answers = answers
+      
+        var options: [String] = []
+        for i in 0...10 {
+            guard let option = json["option\(i + 1)"].string else {break}
+            options.append(option)
+        }
+        self.options = options
     }
 }
