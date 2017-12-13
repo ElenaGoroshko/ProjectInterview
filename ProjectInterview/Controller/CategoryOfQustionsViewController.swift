@@ -51,7 +51,7 @@ extension CategoryOfQustionsViewController: UITableViewDelegate, UITableViewData
             return CategoryOfQuestionsCell()
         }
         guard let categ = DataManager.instance.categoryOfQuestions(by: indexPath.row) else { return CategoryOfQuestionsCell() }
-        debugPrint(categ)
+       // debugPrint(categ)
         cell.update(categoryOfQuestions: categ.name)
         return cell
     }
@@ -68,7 +68,7 @@ extension CategoryOfQustionsViewController {
                 for jsonObject in jsonArr {
                     guard let categories = CategoryOfQuestions(json: jsonObject) else { continue }
                     DataManager.instance.addCategoryOfQuestions(categories)
-                    debugPrint(categories)
+                    //debugPrint(categories)
                 }
                 self.tabelView.reloadData()
             case .failure(let error):

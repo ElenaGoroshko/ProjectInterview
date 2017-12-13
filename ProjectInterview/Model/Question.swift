@@ -17,7 +17,7 @@ struct  Question {
 }
 extension Question {
     init? (json: JSON) {
-        debugPrint(json)
+       // debugPrint(json)
         guard let id = json["id"].int,
             let name = json["question"].string,
             let answers = json["answers"].int
@@ -34,5 +34,6 @@ extension Question {
             options.append(option)
         }
         self.options = options
+       // debugPrint(self.options)
     }
 }

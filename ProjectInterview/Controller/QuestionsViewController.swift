@@ -26,7 +26,17 @@ class QuestionsViewController: UIViewController {
         getQuestions(category: category)
         
     }
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let destVC = segue.destination as? OptionsViewController,
+                segue.identifier == "ShowOptions",
+                let cell = sender as? QuestionsCell,
+                let IndexPath = tableView.indexPath(for: cell),
+                let categ = categoryOfQuestions else {fatalError("Error")}
+        
+        destVC.question = DataManager.instance.question(categoryOfQuestions: categ,
+                                                        index: IndexPath.row)
+        
+    }
 }
 // MARK: - UITableViewDelegate & UITableViewDataSource
 extension QuestionsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -62,7 +72,7 @@ extension QuestionsViewController {
                     guard let jsonArr = jsonObj.array else { return }
                     for jsonObject in jsonArr {
                         guard let question = Question(json: jsonObject) else { continue }
-                        debugPrint(question)
+                       // debugPrint(question)
                         DataManager.instance.addQuestion(categoryOfQuestions: (category), question: question)
                     }
                 case .failure(let error):
