@@ -24,7 +24,7 @@ class OptionsViewController: UIViewController {
             let btn: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 160, height: 50 ))
             btn.backgroundColor = UIColor.lightGray
             guard let title = question?.options[i] else {return}
-            debugPrint(question?.options[i])
+           // debugPrint(question?.options[i])
             btn.setTitle(title, for: UIControlState.normal)
             btn.addTarget(self, action: #selector(self.buttonAction(_:)),
                           for: UIControlEvents.touchUpInside)
@@ -35,7 +35,16 @@ class OptionsViewController: UIViewController {
     @objc func buttonAction(_ sender: UIButton!) {
                 //var btnsendtag: UIButton = sender
         debugPrint("+++", sender.currentTitle ?? "---")
-        
+        guard let choice: String = sender.currentTitle else {return}
+        if question!.isRight(for: choice) {
+            let alert = UIAlertController(title: "Правильно", message: "Поздравляем! Это правильный ответ!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Ошибка", message: "Упс! Попробуйте еще раз", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
     }
     
 }

@@ -36,4 +36,10 @@ extension Question {
         self.options = options
        // debugPrint(self.options)
     }
+    func isRight (for choice: String) -> Bool {
+        for i in 0...(options.count - 1) where choice == options[i] {
+            if answers == i + 1 { return true }
+        }
+        return false
+    }
 }

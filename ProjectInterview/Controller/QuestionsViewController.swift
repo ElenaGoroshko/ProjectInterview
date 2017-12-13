@@ -72,7 +72,7 @@ extension QuestionsViewController {
                     guard let jsonArr = jsonObj.array else { return }
                     for jsonObject in jsonArr {
                         guard let question = Question(json: jsonObject) else { continue }
-                       // debugPrint(question)
+                       // debugPrint(question.options.count)
                         DataManager.instance.addQuestion(categoryOfQuestions: (category), question: question)
                     }
                 case .failure(let error):
